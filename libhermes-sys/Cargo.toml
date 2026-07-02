@@ -9,10 +9,17 @@ repository = "https://github.com/rust-hermes/rusty_hermes"
 license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-exclude = [
-  "hermes"
-]
+#
+# `hermes/` (the vendored Facebook Hermes submodule, ~200-300MB) is
+# intentionally NOT excluded here, unlike upstream — `cargo package`
+# refuses to build a verifiable tarball otherwise (build.rs can't find
+# the CMake source in the packaged output). Self-hosted registries
+# (GitHub Releases-backed) don't enforce crates.io's tighter package-size
+# limits, so vendoring it is the pragmatic fix for now — see the
+# "Hermes vendoring" discussion in the consuming repo's
+# docs/pitfalls/windows-msvc-build.md for the full tradeoff (a
+# prebuilt-binary download, mirroring how skia-bindings handles its own
+# huge C++ dependency, is the better long-term fix, not done yet).
 
 [dependencies]
 
